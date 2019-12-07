@@ -1,0 +1,113 @@
+﻿@model CheckAccomodationAvailabilityViewModel
+
+<script src="~/User/js/jquery-3.3.1.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<style>
+    .social-icons {
+        display: inline-block;
+        font-size: 20px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        DateTimePicker()
+    });
+
+    function DateTimePicker() {
+        $('.datepicker').datepicker({
+            dateFormat: 'dd-MM-yy',
+            changeMonth: true,
+            changeYear: true,
+            sideBySide: true,
+            controlType: 'select',
+            minDate: new Date(),
+        })
+
+        $('#txtBookingFrom').prop('value', 'Clear');
+        $('#txtBookingFrom').change(function () {
+            var date2 = $('#txtBookingFrom').datepicker('getDate', '+1d');
+            date2.setDate(date2.getDate() + 1);
+        });
+    }
+</script>
+
+<div id="colorlib-contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-md-offset-1 animate-box">
+                <h3>CONFIRM BOOKING</h3>
+            </div>
+            <div class="col-md-12 col-md-offset-1 animate-box">
+                <h3>Get In Touch</h3>
+                <form asp-action="Booking">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="AccomodationPackageID">Packge Name</label>
+                        @Html.DropDownListFor(model => model.AccomodationPackageID, Model.ListOfPackage, new { @class = "form-control" })
+                        <span asp-validation-for="AccomodationPackageID" class="text-danger"></span>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label asp-for="FromDate">Check In Date</label>
+                            @*@Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @readonly = "true", Value = Model.FromDate.ToString("dd-MM-yyyy"), @class = "form-control datepicker" }, @id = "txtBookingFrom" });*@
+                            <input type="text" id="txtBookingFrom" asp-for="FromDate" class="form-control datepicker" readonly="readonly" />
+                            <span asp-validation-for="FromDate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Duration" class="control-label">Duration</label>
+                            <select asp-for="Duration" class="form-control" placeholder="Duration of Stay Nights">
+                                @for (int i = 1; i <= 10; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Duration" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label asp-for="NoOfAdults" class="control-label">No of adults</label>
+                            <input asp-for="NoOfAdults" class="form-control" value="1" min="1" max="10" />
+                            <span asp-validation-for="NoOfAdults" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NoOfChildren" class="control-label">No of children</label>
+                            <input asp-for="NoOfChildren" class="form-control" value="0" min="0" max="10" />
+                            <span asp-validation-for="NoOfChildren" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="control-label">Guest Name</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="control-label">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Your email address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label asp-for="Notes" class="control-label">Add Special Notes</label>
+                            <textarea asp-for="Notes" cols="30" rows="10" class="form-control" placeholder="Add Special Notes"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input id="btn" type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

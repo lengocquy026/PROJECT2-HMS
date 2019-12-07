@@ -1,0 +1,68 @@
+﻿@model AccomodationPackageEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<script>
+    function DisplayImage(result) {
+        if (result.files && result.files[0]) {
+            var fileReader = new FileReader;
+            fileReader.onload = function (e) {
+                $('#imgRoom').attr('src', e.target.result);
+            }
+
+            fileReader.readAsDataURL(result.files[0]);
+        }
+    }
+</script>
+
+<h4>AccomodationPackage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.AccomodationTypeID)
+                @Html.DropDownListFor(model => model.AccomodationTypeID, Model.ListOfAccomodationType, new { @class = "form-control" })
+                <span asp-validation-for="AccomodationTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOfRoom" class="control-label"></label>
+                <input asp-for="NoOfRoom" class="form-control" />
+                <span asp-validation-for="NoOfRoom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeePerNight" class="control-label"></label>
+                <input asp-for="FeePerNight" class="form-control" />
+                <span asp-validation-for="FeePerNight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image)
+                <input type="file" class="form-control" name="roomImage" title="Load Image" onchange="DisplayImage(this)" /><br />
+                <img src="~/img/@Model.ExistingPhotoPath" id="imgRoom" height="200" width="200" style="border:1px solid" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

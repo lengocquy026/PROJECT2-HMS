@@ -1,0 +1,16 @@
+﻿@model IEnumerable<AccomodationType>
+
+<li class="dropdown">
+    <a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Rooms Type
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        @foreach (var item in Model)
+        {
+            <a class="dropdown-item" href="@Url.Action("AccomodationType","AccomodationTypes", new {@ID = item.ID })">@item.Name</a>
+        }
+        <div class="divider"></div>
+        <a class="dropdown-item" asp-controller="AccomodationPackages" asp-action="List">View all</a>
+    </div>
+</li>
