@@ -139,6 +139,10 @@ namespace HMS.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var booking = await _context.Booking.FindAsync(id);
+            
+            if(booking == null)
+                return NotFound();
+            
             _context.Booking.Remove(booking);
             await _context.SaveChangesAsync();
 
